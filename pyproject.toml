@@ -1,0 +1,19 @@
+[project]
+name = "simple-rts"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Michael Coppeta", email = "mcoppeta@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "websockets>=17.1",
+]
+
+[project.scripts]
+simple-rts = "simple_rts:main"
+
+[build-system]
+requires = ["uv_build>=0.12.7,<0.13.0"]
+build-backend = "uv_build"
