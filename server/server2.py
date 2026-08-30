@@ -4,18 +4,22 @@ import websockets
 connected = set()
 counter = 0
 
+async def send_opponent(current_player, message, metadata=None):
+    for connection in list(connected):
+        if connection != current_player:
+            await connection.send(message)
+            print(metadata)
+
 async def handler(websocket):
     global counter
     connected.add(websocket)
-    print(f"Client {counter} connected","\n\n")
+    print(f"Client {counter} connected as player {counter % 2}","\n\n")
     clientId = counter
     counter += 1
     try:
         async for message in websocket:
-            print(f"Client {clientId}:\t {message}")
-            response = f"Echo: {message}"
-            await websocket.send(response)
-            print(f"Server to Client {clientId}:\t {response}\n")
+            print(f"Client {clientId} | player {clientId % 2}:\t {message}")
+            await send_opponent(websocket, message, f"Server to player {(clientId + 1) % 2}: {message}")
     finally:
         connected.remove(websocket)
         print(f"Client {clientId} disconnected")
